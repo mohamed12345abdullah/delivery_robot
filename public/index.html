@@ -38,13 +38,16 @@
 
 async function move() {
 
+
+
+    const url="https://delivery-robot-orcin.vercel.app/"
     try {
     const moveButton = document.getElementById("move");
     moveButton.style.backgroundColor = "green";
     const stopButton = document.getElementById("stop");
     stopButton.style.backgroundColor = "#ccc";
 
-    const moveResponse = await fetch("http://localhost:3000/move", {
+    const moveResponse = await fetch(url+"/move", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -75,7 +78,7 @@ async function stop() {
     const moveButton = document.getElementById("move");
     moveButton.style.backgroundColor = "#ccc";
 
-    const stopResponse = await fetch("http://localhost:3000/move", {
+    const stopResponse = await fetch(url+"/move", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
