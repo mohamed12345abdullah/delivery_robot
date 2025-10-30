@@ -21,7 +21,7 @@ app.post("/move", (req, res) => {
 app.get("/getMove", (req, res) => {
 
   console.log("robot get the move message");
-  res.json({ message });
+  res.json({command: message.command , x: message.x , y: message.y });
 });
 
 
