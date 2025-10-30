@@ -12,7 +12,7 @@ const client = mqtt.connect("mqtt://broker.hivemq.com:1883");
 client.on("connect", () => console.log("✅ Connected to MQTT Broker"));
 
 
-app.get("/", express.static("public"));
+app.get("/view", express.static("public"));
 // لما المستخدم يضغط زر مثلاً في الويب
 app.post("/move", (req, res) => {
   const { x, y } = req.body;
@@ -30,6 +30,14 @@ client.on("message", (topic, message) => {
   if (topic === "robot/status") {
     console.log("🤖 Robot Status:", message.toString());
   }
+});
+
+
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>Delivery Robot Control Panel</h1>
+    <p>server is running successfully</p>
+    `);
 });
 
 app.listen(3000, () => console.log("🚀 Server running on port 3000"));
