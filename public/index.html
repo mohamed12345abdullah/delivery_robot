@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #ccc;
+        }   
+    </style>
+</head>
+<body>
+
+    <h1>delivery robot control panel</h1>
+    
+    <button id="move" onclick="move()">Move</button>
+    <button id="stop" onclick="stop()">Stop</button>
+
+
+
+    
+    <script>
+
+
+async function move() {
+
+    try {
+    const moveButton = document.getElementById("move");
+    moveButton.style.backgroundColor = "green";
+    const stopButton = document.getElementById("stop");
+    stopButton.style.backgroundColor = "#ccc";
+
+    const moveResponse = await fetch("http://localhost:3000/move", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            x: 1,
+            y: 1,
+        }),
+    });
+
+    const res=await moveResponse;
+    if(res.ok) {
+        console.log("Robot moved successfully");
+        console.log(res);
+    } else {
+        console.error("Error moving robot");
+    }
+    } catch (error) {
+        console.error("Error moving robot:", error);
+    }
+}
+
+async function stop() {
+    try {
+    const stopButton = document.getElementById("stop");
+    stopButton.style.backgroundColor = "red";
+    
+    const moveButton = document.getElementById("move");
+    moveButton.style.backgroundColor = "#ccc";
+
+    const stopResponse = await fetch("http://localhost:3000/move", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            x: 0,
+            y: 0,
+        }),
+    });
+
+    const res=await stopResponse;
+    if(res.ok) {
+        console.log("Robot stopped successfully");
+        console.log(res);
+    } else {
+        console.error("Error stopping robot");
+    }
+    } catch (error) {
+        console.error("Error stopping robot:", error);
+    }
+}
+    </script>
+</body>
+</html>
