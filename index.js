@@ -8,11 +8,17 @@ app.use(express.json());
 
 
 app.get("/", express.static(path.join(__dirname, "public")));
-let message=JSON.stringify({ command: "move", x: 0, y: 0 });
+let data={
+  command: "move",
+  x: 0,
+  y: 0
+};
 app.post("/move", (req, res) => {
-  const { x, y } = req.body;
-  message = JSON.stringify({ command: "move", x, y });
-
+    const { x, y } = req.body;
+    data.x=x;
+    data.y=y;
+    console.log("move command sent successfully");
+    
 
   res.json({ message: "Command sent successfully" });
 });
@@ -21,16 +27,16 @@ app.post("/move", (req, res) => {
 app.get("/getMove", (req, res) => {
 
   console.log("robot get the move message");
-  res.json({command: message.command , x: message.x , y: message.y });
+  res.json(data);
 });
 
 
 app.post("/status", (req, res) => {
   const { status ,yaw} = req.body;
 
-  
+  console.log("status sent successfully",status,yaw);
 
-  res.json({ message: "status sent successfully" });
+  res.json({ message: "status sent successfully" ,status,yaw});
 });
 
 app.get("/", (req, res) => {
