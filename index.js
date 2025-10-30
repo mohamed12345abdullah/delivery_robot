@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import mqtt from "mqtt";
-
+const express = require("express");
+const cors = require("cors");
+const mqtt = require("mqtt");
+const path = require("path");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -12,7 +12,8 @@ const client = mqtt.connect("mqtt://broker.hivemq.com:1883");
 client.on("connect", () => console.log("✅ Connected to MQTT Broker"));
 
 
-app.get("/view", express.static("public"));
+app.get("/", express.static(path.join(__dirname, "public")));
+
 // لما المستخدم يضغط زر مثلاً في الويب
 app.post("/move", (req, res) => {
   const { x, y } = req.body;
