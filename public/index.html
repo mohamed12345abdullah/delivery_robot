@@ -59,6 +59,8 @@ async function move() {
     });
 
     const res=await moveResponse;
+    const data=await res.json();
+    console.log(data);
     if(res.ok) {
         console.log("Robot moved successfully");
         console.log(res);
@@ -90,6 +92,8 @@ async function stop() {
     });
 
     const res=await stopResponse;
+    const data=await res.json();
+    console.log(data);
     if(res.ok) {
         console.log("Robot stopped successfully");
         console.log(res);
