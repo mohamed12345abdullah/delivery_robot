@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const http = require("http");
+const { Server } = require("socket.io");
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -13,6 +16,46 @@ let data={
   x: 0,
   y: 0
 };
+// Socket.IO setup
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("🔌 Client connected:", socket.id);
+
+  // Send current move data on connection
+  socket.emit("move_data", data);
+
+  // Handle move command
+  socket.on("move", ({ x, y }) => {
+    data.x = x;
+    data.y = y;
+    console.log("[socket] move command received", x, y);
+    socket.emit("move_ack", { message: "Command sent successfully" });
+    io.emit("move_update", data);
+  });
+
+  // Handle getMove request
+  socket.on("getMove", () => {
+    console.log("[socket] robot requested move data");
+    socket.emit("move_data", data);
+  });
+
+  // Handle status updates from robot
+  socket.on("status", ({ status, yaw }) => {
+    console.log("[socket] status sent successfully", status, yaw);
+    socket.emit("status_ack", { message: "status sent successfully", status, yaw });
+    io.emit("status", { status, yaw });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("🔌 Client disconnected:", socket.id);
+  });
+});
 app.post("/move", (req, res) => {
     const { x, y } = req.body;
     data.x=x;
@@ -46,4 +89,4 @@ app.get("/", (req, res) => {
     `);
 });
 
-app.listen(3000, () => console.log("🚀 Server running on port 3000"));
+server.listen(3000, () => console.log("🚀 Server + Socket.IO running on port 3000"));

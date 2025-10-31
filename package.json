@@ -2,10 +2,11 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "socket.io": "^4.7.5",
     "mqtt": "^5.14.1",
     "nodemon": "^3.1.10",
     "path": "^0.12.7"
-  },
+  },  
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js"
