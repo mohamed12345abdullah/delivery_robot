@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Delivery Robot Control Panel</title>
     <style>
         body {
             display: flex;
@@ -20,67 +20,48 @@
             margin: 10px;
             cursor: pointer;
             background-color: #ccc;
-        }   
+            border: none;
+            outline: none;
+        }
+        #move { background-color: #ccc; }
+        #stop { background-color: #ccc; }
     </style>
 </head>
 <body>
 
-    <h1>delivery robot control panel</h1>
+    <h1>Delivery Robot Control Panel</h1>
     
     <button id="move" onclick="move()">Move</button>
     <button id="stop" onclick="stop()">Stop</button>
 
-
-
-    <script src="/socket.io/socket.io.js"></script>
     <script>
-    const socket = io();
 
-    socket.on("connect", () => {
-        console.log("socket connected", socket.id);
-    });
+    const url="..";
 
-    socket.on("move_ack", (payload) => {
-        console.log("move ack", payload);
-    });
-
-    socket.on("move_update", (payload) => {
-        console.log("move update", payload);
-    });
-
-    socket.on("move_data", (payload) => {
-        console.log("move data", payload);
-    });
-
-    socket.on("status", ({ status, yaw }) => {
-        console.log("status", status, yaw);
-    });
+    
+    function sendCommand(x, y) {
+        fetch("/move", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ x, y })
+        })
+        .then(res => res.json())
+        .then(data => console.log("✅ Server Response:", data))
+        .catch(err => console.error("❌ Error:", err));
+    }
 
     function move() {
-        try {
-            const moveButton = document.getElementById("move");
-            moveButton.style.backgroundColor = "green";
-            const stopButton = document.getElementById("stop");
-            stopButton.style.backgroundColor = "#ccc";
-
-            socket.emit("move", { x: 1, y: 1 });
-        } catch (error) {
-            console.error("Error moving robot:", error);
-        }
+        document.getElementById("move").style.backgroundColor = "green";
+        document.getElementById("stop").style.backgroundColor = "#ccc";
+        sendCommand(1, 1);
     }
 
     function stop() {
-        try {
-            const stopButton = document.getElementById("stop");
-            stopButton.style.backgroundColor = "red";
-            const moveButton = document.getElementById("move");
-            moveButton.style.backgroundColor = "#ccc";
-
-            socket.emit("move", { x: 0, y: 0 });
-        } catch (error) {
-            console.error("Error stopping robot:", error);
-        }
+        document.getElementById("stop").style.backgroundColor = "red";
+        document.getElementById("move").style.backgroundColor = "#ccc";
+        sendCommand(0, 0);
     }
     </script>
+
 </body>
 </html>

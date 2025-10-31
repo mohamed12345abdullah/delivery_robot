@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
  
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 let data={
   command: "move",
   x: 0,
@@ -81,11 +81,11 @@ app.post("/status", (req, res) => {
   res.json({ message: "status sent successfully" ,status,yaw});
 });
 
-// app.get("/", (req, res) => {
-//   res.send(`
-//     <h1>Delivery Robot Control Panel</h1>
-//     <p>server is running successfully</p>
-//     `);
-// });
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>Delivery Robot Control Panel</h1>
+    <p>server is running successfully</p>
+    `);
+});
  
 server.listen(3000, () => console.log("🚀 Server + Socket.IO running on port 3000"));
