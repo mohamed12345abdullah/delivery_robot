@@ -7,10 +7,8 @@ const { Server } = require("socket.io");
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-
-
-app.get("/", express.static(path.join(__dirname, "public")));
+ 
+// app.use(express.static(path.join(__dirname, "public")));
 let data={
   command: "move",
   x: 0,
@@ -29,14 +27,15 @@ io.on("connection", (socket) => {
 
   // Send current move data on connection
   socket.emit("move_data", data);
-
+ 
   // Handle move command
   socket.on("move", ({ x, y }) => {
     data.x = x;
     data.y = y;
     console.log("[socket] move command received", x, y);
-    socket.emit("move_ack", { message: "Command sent successfully" });
-    io.emit("move_update", data);
+    socket.emit("move_data", { message: "Command sent successfully" });
+    io.emit("move_data", data);
+    console.log("move_data", data);
   });
 
   // Handle getMove request
@@ -44,7 +43,7 @@ io.on("connection", (socket) => {
     console.log("[socket] robot requested move data");
     socket.emit("move_data", data);
   });
-
+ 
   // Handle status updates from robot
   socket.on("status", ({ status, yaw }) => {
     console.log("[socket] status sent successfully", status, yaw);
@@ -82,11 +81,11 @@ app.post("/status", (req, res) => {
   res.json({ message: "status sent successfully" ,status,yaw});
 });
 
-app.get("/", (req, res) => {
-  res.send(`
-    <h1>Delivery Robot Control Panel</h1>
-    <p>server is running successfully</p>
-    `);
-});
-
+// app.get("/", (req, res) => {
+//   res.send(`
+//     <h1>Delivery Robot Control Panel</h1>
+//     <p>server is running successfully</p>
+//     `);
+// });
+ 
 server.listen(3000, () => console.log("🚀 Server + Socket.IO running on port 3000"));

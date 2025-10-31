@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+
+    recive move data
+
+
+    <div id="data"></div>
+    <script>
+        const socket = io();
+        socket.on("move_data", (data) => {
+            console.log(data);
+            document.getElementById("data").innerHTML = data.x + " " + data.y;
+        });
+    </script>
+    
+</body>
+</html>
