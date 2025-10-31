@@ -9,6 +9,8 @@
   },  
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo 'Skipping build step on Railway 🚀'"
+
   }
 }
