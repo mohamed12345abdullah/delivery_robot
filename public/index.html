@@ -36,11 +36,11 @@
 
     <script>
 
-    const url="..";
+    const url="https://delivery-robot-orcin.vercel.app/";
 
     
     function sendCommand(x, y) {
-        fetch("/move", {
+        fetch(url+"/move", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ x, y })
