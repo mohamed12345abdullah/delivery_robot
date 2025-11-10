@@ -41,4 +41,9 @@ app.get("/", (req, res) => {
     `);
 });
 
+
+app.get("/status", (req, res) => {
+  res.json({ message: "Server is running successfully" });
+}); 
+
 app.listen(3000, () => console.log("🚀 Server running on port 3000"));

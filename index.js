@@ -55,6 +55,20 @@ io.on("connection", (socket) => {
     console.log("🔌 Client disconnected:", socket.id);
   });
 });
+
+
+
+
+app.use("/", (req, res,next) => {
+console.log(req.url);
+console.log(req.method);
+console.log("waiting ....................");
+
+next();
+});
+  
+
+
 app.post("/move", (req, res) => {
     const { x, y } = req.body;
     data.x=x;
@@ -81,11 +95,8 @@ app.post("/status", (req, res) => {
   res.json({ message: "status sent successfully" ,status,yaw});
 });
 
-app.get("/", (req, res) => {
-  res.send(`
-    <h1>Delivery Robot Control Panel</h1>
-    <p>server is running successfully</p>
-    `);
+
+app.get("/status", (req, res) => {
+  res.json({ message: "Server is running successfully" });
 });
- 
 server.listen(3000, () => console.log("🚀 Server + Socket.IO running on port 3000"));
